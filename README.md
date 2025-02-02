@@ -70,7 +70,7 @@ Also, value-objects are responsible for a little more than just plain data holdi
   -2.Business logic is removed from Money class.
 * Investigate whether it is possible to implement the value-object serialization, to avoid `value` nested field in JSON. See [#10](https://github.com/cleankod/currency-rate-converter/pull/10) as a starting point. Or maybe there is a better solution to the problem at hand?
  - 1.Use of @JsonUnwrapped or @JsonProperty
- - 2.Using libraries such as MapStruct or ModelMapper can automate the conversion between your domain model and the flattened DTO, saving you from manual mapping code.
+ - 2.Using libraries such as MapStruct or ModelMapper can automate the conversion between your domain model and the flattened DTO, saving from manual mapping code.
 * Move parameter-specific logic outside the controller.
   -1.Move parameter specific logic to AccountServiceImpl
   -2.Added Interface to Account Controller
