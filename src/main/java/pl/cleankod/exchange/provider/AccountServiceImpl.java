@@ -3,6 +3,8 @@ package pl.cleankod.exchange.provider;
 import java.util.Currency;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ import pl.cleankod.exchange.core.usecase.FindAccountUseCase;
 
 @Service
 public class AccountServiceImpl {
+	
+	private final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
+	
 	@Autowired
 	private FindAccountAndConvertCurrencyUseCase findAccountAndConvertCurrencyUseCase ;
 	@Autowired
@@ -24,6 +29,8 @@ public class AccountServiceImpl {
 	}
     
 	public  ResponseEntity<Account> findAccountById(String id, String currency) {
+		
+		logger.debug("AccountServiceImpl-findAccountById-{}-{}",id,currency);
 		return Optional.ofNullable(currency)
                 .map(s ->
                         findAccountAndConvertCurrencyUseCase.execute(Account.Id.of(id), Currency.getInstance(s))

@@ -25,12 +25,12 @@
     </appender>
 
     <!-- Root Logger -->
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>
 
     <!-- Custom Logger Example -->
-    <logger name="pl.cleankod.excahnge" level="DEBUG"/>
+    <!--  <logger name="pl.cleankod.excahnge" level="DEBUG"/>-->
     
 </configuration>
