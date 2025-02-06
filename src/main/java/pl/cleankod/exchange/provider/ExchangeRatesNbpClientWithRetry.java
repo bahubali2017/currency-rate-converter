@@ -1,7 +1,6 @@
 package pl.cleankod.exchange.provider;
 
 import io.github.resilience4j.retry.annotation.Retry;
-import org.springframework.stereotype.Service;
 import pl.cleankod.exchange.provider.nbp.ExchangeRatesNbpClient;
 import pl.cleankod.exchange.provider.nbp.model.RateWrapper;
 

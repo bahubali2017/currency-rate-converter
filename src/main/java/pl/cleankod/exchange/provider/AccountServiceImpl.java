@@ -2,9 +2,7 @@ package pl.cleankod.exchange.provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import pl.cleankod.exchange.core.domain.Account;
 import pl.cleankod.exchange.core.gateway.AccountDto;
 import pl.cleankod.exchange.core.gateway.AccountMapper;
@@ -19,20 +17,19 @@ public class AccountServiceImpl {
 
     private final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
 
-    @Autowired
+
     private final FindAccountAndConvertCurrencyUseCase findAccountAndConvertCurrencyUseCase;
-    @Autowired
+
     private final FindAccountUseCase findAccountUseCase;
 
     private final AccountMapper accountMapper;
-
 
 
     public AccountServiceImpl(FindAccountAndConvertCurrencyUseCase findAccountAndConvertCurrencyUseCase,
                               FindAccountUseCase findAccountUseCase, AccountMapper accountMapper) {
         this.findAccountAndConvertCurrencyUseCase = findAccountAndConvertCurrencyUseCase;
         this.findAccountUseCase = findAccountUseCase;
-        this.accountMapper = accountMapper ;
+        this.accountMapper = accountMapper;
     }
 
     public ResponseEntity<AccountDto> findAccountById(String id, String currency) {

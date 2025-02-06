@@ -1,11 +1,10 @@
 package pl.cleankod.exchange.provider;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-@Service
+
 public class ExchangeRateService {
 
 
@@ -17,7 +16,7 @@ public class ExchangeRateService {
 
 
     @Cacheable(value = "currencyConversionCache", key = "#targetCurrency", unless = "#result == null")
-    public BigDecimal getMidExchangeRate(String table , String targetCurrency) {
+    public BigDecimal getMidExchangeRate(String table, String targetCurrency) {
         return exchangeRatesNbpClientWithRetry.fetch(table, targetCurrency).rates().get(0).mid();
     }
 }
