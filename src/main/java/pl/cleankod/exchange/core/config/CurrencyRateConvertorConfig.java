@@ -7,6 +7,7 @@ import feign.jackson.JacksonEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import pl.cleankod.exchange.core.gateway.AccountMapper;
 import pl.cleankod.exchange.core.gateway.AccountRepository;
 import pl.cleankod.exchange.core.gateway.CurrencyConversionService;
 import pl.cleankod.exchange.core.usecase.FindAccountAndConvertCurrencyUseCase;
@@ -72,13 +73,15 @@ public class CurrencyRateConvertorConfig {
 
     @Bean
     AccountServiceImpl accountServiceImpl(FindAccountAndConvertCurrencyUseCase findAccountAndConvertCurrencyUseCase,
-                                          FindAccountUseCase findAccountUseCase) {
-        return new AccountServiceImpl(findAccountAndConvertCurrencyUseCase, findAccountUseCase);
+                                          FindAccountUseCase findAccountUseCase, AccountMapper accountMapper) {
+        return new AccountServiceImpl(findAccountAndConvertCurrencyUseCase, findAccountUseCase, accountMapper);
     }
 
     @Bean
     ExceptionHandlerAdvice exceptionHandlerAdvice() {
         return new ExceptionHandlerAdvice();
     }
+
+
 
 }

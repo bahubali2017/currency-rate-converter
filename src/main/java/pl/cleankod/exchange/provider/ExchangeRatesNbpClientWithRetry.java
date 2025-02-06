@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.cleankod.exchange.provider.nbp.ExchangeRatesNbpClient;
 import pl.cleankod.exchange.provider.nbp.model.RateWrapper;
 
-@Service
+
 public class ExchangeRatesNbpClientWithRetry implements ExchangeRatesNbpClient {
     private final ExchangeRatesNbpClient exchangeRatesNbpClient;
 

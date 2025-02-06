@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.cleankod.exchange.core.domain.Account;
+import pl.cleankod.exchange.core.gateway.AccountDto;
 import pl.cleankod.exchange.entrypoint.model.AccountNotFoundException;
 import pl.cleankod.exchange.entrypoint.model.ApiError;
 import pl.cleankod.exchange.provider.AccountServiceImpl;
@@ -40,8 +41,8 @@ public class AccountController {
                     content = @Content(schema = @Schema(implementation = ApiError.class)))
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Account> findAccountById(@PathVariable String id, @RequestParam(required = false) String currency) {
-        ResponseEntity<Account> accountDetailsbyId = accountServiceImpl.findAccountById(id, currency);
+    public ResponseEntity<AccountDto> findAccountById(@PathVariable String id, @RequestParam(required = false) String currency) {
+        ResponseEntity<AccountDto> accountDetailsbyId = accountServiceImpl.findAccountById(id, currency);
         if (String.valueOf(accountDetailsbyId.getStatusCode().value()).equals(NOT_FOUND_RESPONSE)) {
             throw new AccountNotFoundException("Account not found");
         }
@@ -58,9 +59,9 @@ public class AccountController {
                     content = @Content(schema = @Schema(implementation = ApiError.class)))
     })
     @GetMapping(path = "/number={number}")
-    public ResponseEntity<Account> findAccountByNumber(@PathVariable String number, @RequestParam(required = false) String currency) {
+    public ResponseEntity<AccountDto> findAccountByNumber(@PathVariable String number, @RequestParam(required = false) String currency) {
         Account.Number accountNumber = Account.Number.of(URLDecoder.decode(number, StandardCharsets.UTF_8));
-        ResponseEntity<Account> accountDetailsByNumber = accountServiceImpl.findAccountByNumber(currency, accountNumber);
+        ResponseEntity<AccountDto> accountDetailsByNumber = accountServiceImpl.findAccountByNumber(currency, accountNumber);
         if (String.valueOf(accountDetailsByNumber.getStatusCode().value()).equals(NOT_FOUND_RESPONSE)) {
             throw new AccountNotFoundException("Account not found");
         }
