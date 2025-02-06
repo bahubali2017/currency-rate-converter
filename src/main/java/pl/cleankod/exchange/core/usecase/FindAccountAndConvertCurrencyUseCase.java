@@ -1,12 +1,12 @@
 package pl.cleankod.exchange.core.usecase;
 
-import java.util.Currency;
-import java.util.Optional;
-
 import pl.cleankod.exchange.core.domain.Account;
 import pl.cleankod.exchange.core.domain.Money;
 import pl.cleankod.exchange.core.gateway.AccountRepository;
 import pl.cleankod.exchange.core.gateway.CurrencyConversionService;
+
+import java.util.Currency;
+import java.util.Optional;
 
 public class FindAccountAndConvertCurrencyUseCase {
 
@@ -27,17 +27,17 @@ public class FindAccountAndConvertCurrencyUseCase {
                 .map(account -> new Account(account.id(), account.number(), convert(account.balance(), targetCurrency)));
     }
 
-    public Optional<Account> execute(Account.Number number, Currency targetCurrency)   {
+    public Optional<Account> execute(Account.Number number, Currency targetCurrency) {
         return accountRepository.find(number)
                 .map(account -> new Account(account.id(), account.number(), convert(account.balance(), targetCurrency)));
     }
 
-    private Money convert(Money money, Currency targetCurrency){
-        if (!baseCurrency.equals(targetCurrency)) {
+    private Money convert(Money money, Currency targetCurrency) {
+        if (! baseCurrency.equals(targetCurrency)) {
             return currencyConversionService.convert(money, targetCurrency);
         }
 
-        if (!money.currency().equals(targetCurrency)) {
+        if (! money.currency().equals(targetCurrency)) {
             throw new CurrencyConversionException(money.currency(), targetCurrency);
         }
 
