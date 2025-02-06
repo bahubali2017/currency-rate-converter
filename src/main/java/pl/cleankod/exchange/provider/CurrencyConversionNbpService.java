@@ -1,6 +1,5 @@
 package pl.cleankod.exchange.provider;
 
-import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,27 +16,25 @@ public class CurrencyConversionNbpService implements CurrencyConversionService {
 
     private final Logger logger = LoggerFactory.getLogger(CurrencyConversionNbpService.class);
 
-    private final ExchangeRatesNbpClient exchangeRatesNbpClient;
+    private final ExchangeRateService exchangeRateService;
 
-    public CurrencyConversionNbpService(ExchangeRatesNbpClient exchangeRatesNbpClient) {
-        this.exchangeRatesNbpClient = exchangeRatesNbpClient;
+    public CurrencyConversionNbpService(ExchangeRateService exchangeRateService) {
+        this.exchangeRateService = exchangeRateService;
     }
 
     @Override
     public Money convert(Money money, Currency targetCurrency) {
 
-        RateWrapper rateWrapper = getExchangeRate(targetCurrency);
-        BigDecimal midRate = rateWrapper.rates().get(0).mid();
-        BigDecimal calculatedRate = money.amount().divide(midRate, 4, RoundingMode.HALF_UP)
+        BigDecimal midExchangeRate = getMidExchangeRate(targetCurrency);
+        BigDecimal calculatedRate = money.amount().divide(midExchangeRate, 4, RoundingMode.HALF_UP)
                 .setScale(2, RoundingMode.HALF_UP);
         logger.debug("CurrencyConversionNbpService-convert-{}-{}-{}", money.amount(), targetCurrency.getCurrencyCode(), calculatedRate);
         return new Money(calculatedRate, targetCurrency);
     }
 
-    @Retry(name = "nbpApi")
-    @Cacheable(value = "currencyConversionCache", key = "#targetCurrency", unless = "#result == null")
-    public RateWrapper getExchangeRate(Currency targetCurrency) {
-        return exchangeRatesNbpClient.fetch("A", targetCurrency.getCurrencyCode());
+
+    private BigDecimal getMidExchangeRate(Currency targetCurrency) {
+        return exchangeRateService.getMidExchangeRate("A", targetCurrency.getCurrencyCode());
     }
 
 

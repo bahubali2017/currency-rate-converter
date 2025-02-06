@@ -13,9 +13,7 @@ import pl.cleankod.exchange.core.usecase.FindAccountAndConvertCurrencyUseCase;
 import pl.cleankod.exchange.core.usecase.FindAccountUseCase;
 import pl.cleankod.exchange.entrypoint.AccountController;
 import pl.cleankod.exchange.entrypoint.ExceptionHandlerAdvice;
-import pl.cleankod.exchange.provider.AccountInMemoryRepository;
-import pl.cleankod.exchange.provider.AccountServiceImpl;
-import pl.cleankod.exchange.provider.CurrencyConversionNbpService;
+import pl.cleankod.exchange.provider.*;
 import pl.cleankod.exchange.provider.nbp.ExchangeRatesNbpClient;
 
 import java.util.Currency;
@@ -38,8 +36,18 @@ public class CurrencyRateConvertorConfig {
     }
 
     @Bean
-    CurrencyConversionService currencyConversionService(ExchangeRatesNbpClient exchangeRatesNbpClient) {
-        return new CurrencyConversionNbpService(exchangeRatesNbpClient);
+    ExchangeRateService exchangeRateService(ExchangeRatesNbpClientWithRetry exchangeRatesNbpClientWithReTry) {
+        return new ExchangeRateService(exchangeRatesNbpClientWithReTry);
+    }
+
+    @Bean
+    ExchangeRatesNbpClientWithRetry exchangeRatesNbpClientWithRetry(ExchangeRatesNbpClient exchangeRatesNbpClient) {
+        return new ExchangeRatesNbpClientWithRetry(exchangeRatesNbpClient);
+    }
+
+    @Bean
+    CurrencyConversionService currencyConversionService(ExchangeRateService exchangeRateService) {
+        return new CurrencyConversionNbpService(exchangeRateService);
     }
 
     @Bean
